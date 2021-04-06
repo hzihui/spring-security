@@ -31,6 +31,10 @@ package org.springframework.security.core.userdetails;
  * @see org.springframework.security.authentication.dao.DaoAuthenticationProvider
  * @see UserDetails
  */
+
+/**
+ * 加载用户信息接口
+ */
 public interface UserDetailsService {
 
 	/**
@@ -43,6 +47,12 @@ public interface UserDetailsService {
 	 * @return a fully populated user record (never <code>null</code>)
 	 * @throws UsernameNotFoundException if the user could not be found or the user has no
 	 * GrantedAuthority
+	 */
+	/**
+	 * 通过用户名加载用户信息
+	 * @param username 用户名
+	 * @return
+	 * @throws UsernameNotFoundException
 	 */
 	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 

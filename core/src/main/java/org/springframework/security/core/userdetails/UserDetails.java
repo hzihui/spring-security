@@ -40,11 +40,16 @@ import org.springframework.security.core.GrantedAuthority;
  * @see UserDetailsService
  * @see UserCache
  */
+
+/**
+ * 提供用户信息核心接口，该接口仅仅存储用户的信息，后续会将该接口用户信息封装到认证对象
+ * {@link Authentication} 中去
+ */
 public interface UserDetails extends Serializable {
 
 	/**
-	 * Returns the authorities granted to the user. Cannot return <code>null</code>.
-	 * @return the authorities, sorted by natural key (never <code>null</code>)
+	 * 用户权限集
+	 *
 	 */
 	Collection<? extends GrantedAuthority> getAuthorities();
 

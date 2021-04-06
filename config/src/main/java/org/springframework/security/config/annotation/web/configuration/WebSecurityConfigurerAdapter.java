@@ -411,6 +411,12 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 		this.authenticationConfiguration = authenticationConfiguration;
 	}
 
+	/**
+	 * 身份认证事件发布器
+	 * 首先从Spring IOC 容器中获取Bean,如果不存在则获取默认的事件发布器
+	 *
+	 * @return
+	 */
 	private AuthenticationEventPublisher getAuthenticationEventPublisher() {
 		if (this.context.getBeanNamesForType(AuthenticationEventPublisher.class).length > 0) {
 			return this.context.getBean(AuthenticationEventPublisher.class);
@@ -419,6 +425,8 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 	}
 
 	/**
+	 *
+	 * 创建共享对象
 	 * Creates the shared objects
 	 * @return the shared Objects
 	 */
@@ -433,6 +441,8 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 	}
 
 	/**
+	 *
+	 * 用户加载委托类
 	 * Delays the use of the {@link UserDetailsService} from the
 	 * {@link AuthenticationManagerBuilder} to ensure that it has been fully configured.
 	 *
@@ -575,6 +585,9 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 
 	}
 
+	/**
+	 * 装载密码编码器
+	 */
 	static class LazyPasswordEncoder implements PasswordEncoder {
 
 		private ApplicationContext applicationContext;
@@ -600,6 +613,10 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 			return getPasswordEncoder().upgradeEncoding(encodedPassword);
 		}
 
+		/**
+		 * 获取最终干活的PasswordEncoder
+		 * @return
+		 */
 		private PasswordEncoder getPasswordEncoder() {
 			if (this.passwordEncoder != null) {
 				return this.passwordEncoder;
@@ -612,6 +629,12 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 			return passwordEncoder;
 		}
 
+		/**
+		 * 从Spring IOC 容器中获取Bean，如果没有自定义注入则获取不到
+		 * @param type
+		 * @param <T>
+		 * @return
+		 */
 		private <T> T getBeanOrNull(Class<T> type) {
 			try {
 				return this.applicationContext.getBean(type);

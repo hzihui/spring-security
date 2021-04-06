@@ -27,8 +27,11 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 /**
- * Used for creating {@link PasswordEncoder} instances
  *
+ * 密码器静态工厂
+ * WebSecurityConfigurerAdapter 处引用了该类
+ *
+ * Used for creating {@link PasswordEncoder} instances
  * @author Rob Winch
  * @since 5.0
  */
@@ -38,31 +41,9 @@ public final class PasswordEncoderFactories {
 	}
 
 	/**
-	 * Creates a {@link DelegatingPasswordEncoder} with default mappings. Additional
-	 * mappings may be added and the encoding will be updated to conform with best
-	 * practices. However, due to the nature of {@link DelegatingPasswordEncoder} the
-	 * updates should not impact users. The mappings current are:
-	 *
-	 * <ul>
-	 * <li>bcrypt - {@link BCryptPasswordEncoder} (Also used for encoding)</li>
-	 * <li>ldap -
-	 * {@link org.springframework.security.crypto.password.LdapShaPasswordEncoder}</li>
-	 * <li>MD4 -
-	 * {@link org.springframework.security.crypto.password.Md4PasswordEncoder}</li>
-	 * <li>MD5 - {@code new MessageDigestPasswordEncoder("MD5")}</li>
-	 * <li>noop -
-	 * {@link org.springframework.security.crypto.password.NoOpPasswordEncoder}</li>
-	 * <li>pbkdf2 - {@link Pbkdf2PasswordEncoder}</li>
-	 * <li>scrypt - {@link SCryptPasswordEncoder}</li>
-	 * <li>SHA-1 - {@code new MessageDigestPasswordEncoder("SHA-1")}</li>
-	 * <li>SHA-256 - {@code new MessageDigestPasswordEncoder("SHA-256")}</li>
-	 * <li>sha256 -
-	 * {@link org.springframework.security.crypto.password.StandardPasswordEncoder}</li>
-	 * <li>argon2 - {@link Argon2PasswordEncoder}</li>
-	 * </ul>
-	 * @return the {@link PasswordEncoder} to use
+	 * 初始化创建 DelegatingPasswordEncoder
+	 * @return
 	 */
-	@SuppressWarnings("deprecation")
 	public static PasswordEncoder createDelegatingPasswordEncoder() {
 		String encodingId = "bcrypt";
 		Map<String, PasswordEncoder> encoders = new HashMap<>();

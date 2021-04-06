@@ -119,21 +119,44 @@ import java.util.Map;
  * @since 5.0
  * @see org.springframework.security.crypto.factory.PasswordEncoderFactories
  */
+
+/**
+ * 委托密码编码器实现类（密码编码策略控制）
+ *
+ * @author hzihui
+ */
 public class DelegatingPasswordEncoder implements PasswordEncoder {
 
 	private static final String PREFIX = "{";
 
 	private static final String SUFFIX = "}";
 
+	/**
+	 * 通过id 来匹配编码器
+	 * DelegatingPasswordEncoder 初始化时传入，用来提供默认的密码编码器
+	 */
 	private final String idForEncode;
 
+	/**
+	 * 通过idForEncode 匹配出来的密码编码器
+	 */
 	private final PasswordEncoder passwordEncoderForEncode;
 
+	/**
+	 * idForEncode 与 idToPasswordEncoder 映射关系
+	 * DelegatingPasswordEncoder 初始化时转载，初始化时会进行规则校验
+	 *
+	 */
 	private final Map<String, PasswordEncoder> idToPasswordEncoder;
 
+	/**
+	 * 默认的密码编码器，当idToPasswordEncoder 中匹配不上时默认使用该编码器
+	 */
 	private PasswordEncoder defaultPasswordEncoderForMatches = new UnmappedIdPasswordEncoder();
 
 	/**
+	 *
+	 * 初始化密码编码器
 	 * Creates a new instance
 	 * @param idForEncode the id used to lookup which {@link PasswordEncoder} should be
 	 * used for {@link #encode(CharSequence)}
@@ -166,6 +189,9 @@ public class DelegatingPasswordEncoder implements PasswordEncoder {
 	}
 
 	/**
+	 *
+	 * 设置默认的密码编码器
+	 *
 	 * Sets the {@link PasswordEncoder} to delegate to for
 	 * {@link #matches(CharSequence, String)} if the id is not mapped to a
 	 * {@link PasswordEncoder}.
@@ -186,11 +212,22 @@ public class DelegatingPasswordEncoder implements PasswordEncoder {
 		this.defaultPasswordEncoderForMatches = defaultPasswordEncoderForMatches;
 	}
 
+	/**
+	 * 对原始密码进行编码
+	 * @param rawPassword
+	 * @return
+	 */
 	@Override
 	public String encode(CharSequence rawPassword) {
 		return PREFIX + this.idForEncode + SUFFIX + this.passwordEncoderForEncode.encode(rawPassword);
 	}
 
+	/**
+	 * 密码匹配
+	 * @param rawPassword the raw password to encode and match
+	 * @param prefixEncodedPassword
+	 * @return
+	 */
 	@Override
 	public boolean matches(CharSequence rawPassword, String prefixEncodedPassword) {
 		if (rawPassword == null && prefixEncodedPassword == null) {
