@@ -48,3 +48,5 @@ buildFiles.each { File buildFile ->
 		project.buildFileName = buildFile.name
 	}
 }
+include 'spring-security-demo'
+

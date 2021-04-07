@@ -184,6 +184,12 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 	 * </pre>
 	 * @param auth the {@link AuthenticationManagerBuilder} to use
 	 * @throws Exception
+	 *
+	 * 用来构建 AuthenticationManager ，用来管理所有的UserDetails,
+	 * 包括PasswordEncoder密码机制
+	 *
+	 *
+	 *
 	 */
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		this.disableLocalConfigureAuthenticationBldr = true;
@@ -329,6 +335,13 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 	 * Instead, if you want to protect endpoints against common vulnerabilities, then see
 	 * {@link #configure(HttpSecurity)} and the {@link HttpSecurity#authorizeRequests}
 	 * configuration method.
+	 *
+	 * 核心过滤器配置方法，基于Servlet filter 来配置 SpringSecurityFilterChain.
+	 * 而SpringSecurityFilterChain 委托给了核心过滤器Bean DelegatingFilterProxy。
+	 * 相关逻辑在WebSecurityConfiguration中找到。
+	 *
+	 *
+	 *
 	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -348,6 +361,15 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 	 * `permitAll()` authorization rule for more details on public endpoints.
 	 * @param http the {@link HttpSecurity} to modify
 	 * @throws Exception if an error occurs
+	 *
+	 * 安全过滤器链配置方法
+	 * HttpSecurity 用来构建SecurityFilterChain。 SecurityFilterChain 最终会被注入核心过滤器
+	 * 默认 ：
+	 * 1. 所有请求都要被授权
+	 * 2. 使用form 表单登录（默认路径为/login）
+	 * 3. 防止CSRF、XSS攻击
+	 * 4. 启用Http Basic 认证
+	 *
 	 */
 	protected void configure(HttpSecurity http) throws Exception {
 		this.logger.debug("Using default configure(HttpSecurity). "

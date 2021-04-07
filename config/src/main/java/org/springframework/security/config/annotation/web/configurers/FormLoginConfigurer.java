@@ -176,6 +176,10 @@ public final class FormLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
 	 * @param loginPage the login page to redirect to if authentication is required (i.e.
 	 * "/login")
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 *
+	 * 登录页面，非api 接口，对于前后端分离模式需要自定义，默认为/login
+	 *
+	 *
 	 */
 	@Override
 	public FormLoginConfigurer<H> loginPage(String loginPage) {
@@ -188,6 +192,9 @@ public final class FormLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
 	 * @param usernameParameter the HTTP parameter to look for the username when
 	 * performing authentication
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 *
+	 * 自定义用户参数名
+	 *
 	 */
 	public FormLoginConfigurer<H> usernameParameter(String usernameParameter) {
 		getAuthenticationFilter().setUsernameParameter(usernameParameter);
@@ -200,6 +207,9 @@ public final class FormLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
 	 * @param passwordParameter the HTTP parameter to look for the password when
 	 * performing authentication
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 *
+	 * 自定义密码参数名
+	 *
 	 */
 	public FormLoginConfigurer<H> passwordParameter(String passwordParameter) {
 		getAuthenticationFilter().setPasswordParameter(passwordParameter);
@@ -210,6 +220,8 @@ public final class FormLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
 	 * Forward Authentication Failure Handler
 	 * @param forwardUrl the target URL in case of failure
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 * 认证登录失败后会转发到此处，可自定义一个Controller 控制器，一般前端后分离会用到
+	 *
 	 */
 	public FormLoginConfigurer<H> failureForwardUrl(String forwardUrl) {
 		failureHandler(new ForwardAuthenticationFailureHandler(forwardUrl));
@@ -220,6 +232,9 @@ public final class FormLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
 	 * Forward Authentication Success Handler
 	 * @param forwardUrl the target URL in case of success
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 *
+	 * 认证成功后会转发到此处，可自定义一个Controller 控制器，一般前端后分离会用到
+	 *
 	 */
 	public FormLoginConfigurer<H> successForwardUrl(String forwardUrl) {
 		successHandler(new ForwardAuthenticationSuccessHandler(forwardUrl));

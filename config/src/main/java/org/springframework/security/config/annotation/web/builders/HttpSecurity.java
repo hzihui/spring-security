@@ -241,6 +241,7 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 	 * migrate</a> to <a href="https://openid.net/connect/">OpenID Connect</a>, which is
 	 * supported by <code>spring-security-oauth2</code>.
 	 * @see OpenIDLoginConfigurer
+	 *
 	 */
 	@Deprecated
 	public OpenIDLoginConfigurer<HttpSecurity> openidLogin() throws Exception {
@@ -365,6 +366,8 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 	 * migrate</a> to <a href="https://openid.net/connect/">OpenID Connect</a>, which is
 	 * supported by <code>spring-security-oauth2</code>.
 	 * @see OpenIDLoginConfigurer
+	 *
+	 * 用于基于Openid的认证
 	 */
 	@Deprecated
 	public HttpSecurity openidLogin(Customizer<OpenIDLoginConfigurer<HttpSecurity>> openidLoginCustomizer)
@@ -467,6 +470,8 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 	 * @return the {@link HeadersConfigurer} for further customizations
 	 * @throws Exception
 	 * @see HeadersConfigurer
+	 * 将安全表头添加到响应响应，比如简单XSS 防护
+	 *
 	 */
 	public HeadersConfigurer<HttpSecurity> headers() throws Exception {
 		return getOrApply(new HeadersConfigurer<>());
@@ -576,6 +581,8 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 	 * on the classpath a {@link HandlerMappingIntrospector} is used.
 	 * @return the {@link CorsConfigurer} for customizations
 	 * @throws Exception
+	 * 跨域处理
+	 *
 	 */
 	public CorsConfigurer<HttpSecurity> cors() throws Exception {
 		return getOrApply(new CorsConfigurer<>());
@@ -656,6 +663,9 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 	 * could return true.
 	 * @return the {@link SessionManagementConfigurer} for further customizations
 	 * @throws Exception
+	 * 允许配置会话管理
+	 *
+	 *
 	 */
 	public SessionManagementConfigurer<HttpSecurity> sessionManagement() throws Exception {
 		return getOrApply(new SessionManagementConfigurer<>());

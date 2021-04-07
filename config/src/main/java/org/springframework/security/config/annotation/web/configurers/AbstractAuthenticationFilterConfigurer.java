@@ -68,20 +68,41 @@ public abstract class AbstractAuthenticationFilterConfigurer<B extends HttpSecur
 
 	private SavedRequestAwareAuthenticationSuccessHandler defaultSuccessHandler = new SavedRequestAwareAuthenticationSuccessHandler();
 
+	/**
+	 * 登录成功后逻辑处理
+	 */
 	private AuthenticationSuccessHandler successHandler = this.defaultSuccessHandler;
 
 	private LoginUrlAuthenticationEntryPoint authenticationEntryPoint;
 
+	/**
+	 * 是否自定义登录页面
+	 */
 	private boolean customLoginPage;
 
+	/**
+	 * 登录页面
+	 */
 	private String loginPage;
 
+	/**
+	 * 登录页面表单想后台接口提交数据的Action,再由UsernamePasswordAuthenticationFilter 做拦截处理
+	 */
 	private String loginProcessingUrl;
 
+	/**
+	 * 登录失败后处理逻辑
+	 */
 	private AuthenticationFailureHandler failureHandler;
 
+	/**
+	 * 表单登录是否放开
+	 */
 	private boolean permitAll;
 
+	/**
+	 * 登录失败后会重定向到该路径页面，一般前后端分离不会使用到该字段
+	 */
 	private String failureUrl;
 
 	/**
@@ -112,6 +133,7 @@ public abstract class AbstractAuthenticationFilterConfigurer<B extends HttpSecur
 	 * calling {@link #defaultSuccessUrl(String, boolean)}.
 	 * @param defaultSuccessUrl the default success url
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 * 登录成功后默认跳转路径, 调用该方法不会跳转
 	 */
 	public final T defaultSuccessUrl(String defaultSuccessUrl) {
 		return defaultSuccessUrl(defaultSuccessUrl, false);
@@ -126,6 +148,8 @@ public abstract class AbstractAuthenticationFilterConfigurer<B extends HttpSecur
 	 * @param alwaysUse true if the {@code defaultSuccesUrl} should be used after
 	 * authentication despite if a protected page had been previously visited
 	 * @return the {@link FormLoginConfigurer} for additional customization
+	 *
+	 * 登录成功后默认跳转路径 ，alwaysUse 为true 时将会跳转到 defaultSuccessUrl
 	 */
 	public final T defaultSuccessUrl(String defaultSuccessUrl, boolean alwaysUse) {
 		SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
@@ -136,7 +160,7 @@ public abstract class AbstractAuthenticationFilterConfigurer<B extends HttpSecur
 	}
 
 	/**
-	 * Specifies the URL to validate the credentials.
+	 * specifies the URL to validate the credentials.
 	 * @param loginProcessingUrl the URL to validate username and password
 	 * @return the {@link FormLoginConfigurer} for additional customization
 	 */
