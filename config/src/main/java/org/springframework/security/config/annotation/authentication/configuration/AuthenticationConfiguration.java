@@ -54,7 +54,7 @@ import org.springframework.util.Assert;
 
 /**
  * Exports the authentication {@link Configuration}
- *
+ * 身份认证配置类
  * @author Rob Winch
  * @since 3.2
  *
@@ -65,11 +65,21 @@ public class AuthenticationConfiguration {
 
 	private AtomicBoolean buildingAuthenticationManager = new AtomicBoolean();
 
+	/**
+	 * Spring 应用上下文
+	 */
 	private ApplicationContext applicationContext;
 
+	/**
+	 * 认证管理器
+	 */
 	private AuthenticationManager authenticationManager;
 
+	/**
+	 * 认证管理器是否已初始化
+	 */
 	private boolean authenticationManagerInitialized;
+
 
 	private List<GlobalAuthenticationConfigurerAdapter> globalAuthConfigurers = Collections.emptyList();
 
@@ -89,18 +99,33 @@ public class AuthenticationConfiguration {
 		return result;
 	}
 
+	/**
+	 * 打印初始化日志
+	 * @param context
+	 * @return
+	 */
 	@Bean
 	public static GlobalAuthenticationConfigurerAdapter enableGlobalAuthenticationAutowiredConfigurer(
 			ApplicationContext context) {
 		return new EnableGlobalAuthenticationAutowiredConfigurer(context);
 	}
 
+	/**
+	 * 用户详情管理器
+	 * @param context
+	 * @return
+	 */
 	@Bean
 	public static InitializeUserDetailsBeanManagerConfigurer initializeUserDetailsBeanManagerConfigurer(
 			ApplicationContext context) {
 		return new InitializeUserDetailsBeanManagerConfigurer(context);
 	}
 
+	/**
+	 * 认证处理器
+	 * @param context
+	 * @return
+	 */
 	@Bean
 	public static InitializeAuthenticationProviderBeanManagerConfigurer initializeAuthenticationProviderBeanManagerConfigurer(
 			ApplicationContext context) {
@@ -108,21 +133,30 @@ public class AuthenticationConfiguration {
 	}
 
 	public AuthenticationManager getAuthenticationManager() throws Exception {
+		// 判断是否已初始化，如果已初始化则直接返回AuthenticationManager
 		if (this.authenticationManagerInitialized) {
 			return this.authenticationManager;
 		}
+		// 否则从IOC 容器中获取一个 AuthenticationManagerBuilder 构造器 {@link DefaultPasswordEncoderAuthenticationManagerBuilder}（内部类）
 		AuthenticationManagerBuilder authBuilder = this.applicationContext.getBean(AuthenticationManagerBuilder.class);
+		//  如果不是第一次构建
 		if (this.buildingAuthenticationManager.getAndSet(true)) {
+			// 返回一个 委托类 AuthenticationManagerDelegator
 			return new AuthenticationManagerDelegator(authBuilder);
 		}
+		// 将全局认证配置加载到 AuthenticationManagerBuilder 构造器 中
 		for (GlobalAuthenticationConfigurerAdapter config : this.globalAuthConfigurers) {
 			authBuilder.apply(config);
 		}
+		// 构建一个AuthenticationManager
 		this.authenticationManager = authBuilder.build();
+		// 	如果构建结果为空，再次尝试去Spring IoC 获取懒加载的 AuthenticationManager
 		if (this.authenticationManager == null) {
 			this.authenticationManager = getAuthenticationManagerBean();
 		}
+		// 设置为已初始化
 		this.authenticationManagerInitialized = true;
+		// 返回认证管理器
 		return this.authenticationManager;
 	}
 

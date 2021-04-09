@@ -49,7 +49,7 @@ public class Argon2PasswordEncoderTests {
 
 	@Test
 	public void encodeWhenEqualPasswordThenMatches() {
-		String result = this.encoder.encode("password");
+		String result = this.encoder.encode("123456");
 		assertThat(this.encoder.matches("password", result)).isTrue();
 	}
 

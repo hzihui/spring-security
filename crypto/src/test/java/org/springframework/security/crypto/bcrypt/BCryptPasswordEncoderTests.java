@@ -30,6 +30,14 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 public class BCryptPasswordEncoderTests {
 
 	@Test
+	public void encode(){
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String result = encoder.encode("123456");
+		System.out.println(result);
+	}
+
+
+	@Test
 	// gh-5548
 	public void emptyRawPasswordDoesNotMatchPassword() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

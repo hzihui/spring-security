@@ -47,10 +47,15 @@ import org.springframework.util.Assert;
  */
 public class UsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+	/**
+	 * 用户名和密码key
+	 */
 	public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
-
 	public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
 
+	/**
+	 * 默认的登录地址
+	 */
 	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
 			"POST");
 
@@ -58,6 +63,9 @@ public class UsernamePasswordAuthenticationFilter extends AbstractAuthentication
 
 	private String passwordParameter = SPRING_SECURITY_FORM_PASSWORD_KEY;
 
+	/**
+	 * 是否只允许post 请求
+	 */
 	private boolean postOnly = true;
 
 	public UsernamePasswordAuthenticationFilter() {
@@ -68,9 +76,19 @@ public class UsernamePasswordAuthenticationFilter extends AbstractAuthentication
 		super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
 	}
 
+
+	/**
+	 * 实现父类 AbstractAuthenticationProcessingFilter 提供的钩子方法，用于去尝试认证
+	 * @param request from which to extract parameters and perform the authentication
+	 * @param response the response, which may be needed if the implementation has to do a
+	 * redirect as part of a multi-stage authentication process (such as OpenID).
+	 * @return
+	 * @throws AuthenticationException
+	 */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
+		// 判断请求方式
 		if (this.postOnly && !request.getMethod().equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
@@ -79,9 +97,12 @@ public class UsernamePasswordAuthenticationFilter extends AbstractAuthentication
 		username = username.trim();
 		String password = obtainPassword(request);
 		password = (password != null) ? password : "";
+
+		//将用户名和密码分装到 UsernamePasswordAuthenticationToken 中，当前是不可信的，一旦认证成功变为可信
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-		// Allow subclasses to set the "details" property
+		// HttpServletRequest 细节属性一起分装到 UsernamePasswordAuthenticationToken中
 		setDetails(request, authRequest);
+		// 使用 AuthenticationManager 进行token 认证
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 

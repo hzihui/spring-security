@@ -95,6 +95,9 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 
 	private final Log logger = LogFactory.getLog(WebSecurityConfigurerAdapter.class);
 
+	/**
+	 *  IOC 容器
+	 */
 	private ApplicationContext context;
 
 	private ContentNegotiationStrategy contentNegotiationStrategy = new HeaderContentNegotiationStrategy();
@@ -107,20 +110,41 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 		}
 	};
 
+	/**
+	 *初始化 AuthenticationManager 的核心配置
+	 */
 	private AuthenticationConfiguration authenticationConfiguration;
 
+	/**
+	 * 通过Bean 注入的 AuthenticationManagerBuilder
+	 */
 	private AuthenticationManagerBuilder authenticationBuilder;
 
+	/**
+	 * 通过内部类DefaultPasswordEncoderAuthenticationManagerBuilder
+	 */
 	private AuthenticationManagerBuilder localConfigureAuthenticationBldr;
 
+	/**
+	 * 是否禁用本地构造的 AuthenticationManager
+	 */
 	private boolean disableLocalConfigureAuthenticationBldr;
 
+	/**
+	 * AuthenticationManager 是否已初始化
+	 */
 	private boolean authenticationManagerInitialized;
 
+	/**
+	 * 初始化好的 AuthenticationManager
+	 */
 	private AuthenticationManager authenticationManager;
 
 	private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
+	/**
+	 *
+	 */
 	private HttpSecurity http;
 
 	private boolean disableDefaults;
@@ -267,11 +291,14 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 	 */
 	protected AuthenticationManager authenticationManager() throws Exception {
 		if (!this.authenticationManagerInitialized) {
+			// 传入到 WebSecurityConfigurerAdapter 实现类进行构造参数，该操作是地址引用
 			configure(this.localConfigureAuthenticationBldr);
+			// 判断是否已禁用自定义配置认证管理器，当自定义实现了 configure(AuthenticationManagerBuild authenticationManagerBuild),将不会禁用
 			if (this.disableLocalConfigureAuthenticationBldr) {
 				this.authenticationManager = this.authenticationConfiguration.getAuthenticationManager();
 			}
 			else {
+				// 通过自定义AuthenticationManagerBuild 构建 AuthenticationManager
 				this.authenticationManager = this.localConfigureAuthenticationBldr.build();
 			}
 			this.authenticationManagerInitialized = true;
@@ -574,6 +601,9 @@ public abstract class WebSecurityConfigurerAdapter implements WebSecurityConfigu
 
 	}
 
+	/**
+	 * AuthenticationManager 构造器内部类
+	 */
 	static class DefaultPasswordEncoderAuthenticationManagerBuilder extends AuthenticationManagerBuilder {
 
 		private PasswordEncoder defaultPasswordEncoder;
