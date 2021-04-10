@@ -84,11 +84,20 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 	@Autowired(required = false)
 	private ObjectPostProcessor<Object> objectObjectPostProcessor;
 
+	/**
+	 * 委托代理监听器，用于监听 DefaultAuthenticationEventPublisher
+	 * @return
+	 */
 	@Bean
 	public static DelegatingApplicationListener delegatingApplicationListener() {
 		return new DelegatingApplicationListener();
 	}
 
+	/**
+	 * 安全SpEL表达式处理器 SecurityExpressionHandler 缺省为一个
+	 * DefaultWebSecurityExpressionHandler
+	 * @return
+	 */
 	@Bean
 	@DependsOn(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME)
 	public SecurityExpressionHandler<FilterInvocation> webSecurityExpressionHandler() {
@@ -96,7 +105,8 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 	}
 
 	/**
-	 * Creates the Spring Security Filter Chain
+	 *
+	 * Spring Security 核心过滤器 Spring Security Filter Chain , Bean ID 为 springSecurityFilterChain
 	 * @return the {@link Filter} that represents the security filter chain
 	 * @throws Exception
 	 */
@@ -128,6 +138,8 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 	}
 
 	/**
+	 * 用于模板 如JSP Freemarker 的一些页面标签按钮控制支持
+	 *
 	 * Creates the {@link WebInvocationPrivilegeEvaluator} that is necessary for the JSP
 	 * tag support.
 	 * @return the {@link WebInvocationPrivilegeEvaluator}
@@ -189,12 +201,22 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 		return new RsaKeyConversionServicePostProcessor();
 	}
 
+	/**
+	 * 从当前bean容器中获取所有的WebSecurityConfigurer bean。
+	 * 这些WebSecurityConfigurer通常是由开发人员实现的配置类，并且继承自 WebSecurityConfigurerAdapter
+	 * @param beanFactory
+	 * @return
+	 */
 	@Bean
 	public static AutowiredWebSecurityConfigurersIgnoreParents autowiredWebSecurityConfigurersIgnoreParents(
 			ConfigurableListableBeanFactory beanFactory) {
 		return new AutowiredWebSecurityConfigurersIgnoreParents(beanFactory);
 	}
 
+	/**
+	 * 从 EnableWebSecurity 注解中获取 debugEnabled
+	 * @param importMetadata
+	 */
 	@Override
 	public void setImportMetadata(AnnotationMetadata importMetadata) {
 		Map<String, Object> enableWebSecurityAttrMap = importMetadata

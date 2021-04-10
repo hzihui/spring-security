@@ -57,6 +57,14 @@ import org.springframework.web.filter.GenericFilterBean;
  *
  * @author Luke Taylor
  * @since 3.0
+ *
+ * SecurityContextPersistenceFilter 主要控制 SecurityContext 的在一次请求中的生命周期 。
+ * 请求来临时，创建 SecurityContext 安全上下文信息，请求结束时清空 SecurityContextHolder 。
+ * SecurityContextPersistenceFilter 通过 HttpScurity#securityContext() 及相关方法引入
+ * 其配置对象 SecurityContextConfigurer 来进行配置。
+ *
+ *
+ *
  */
 public class SecurityContextPersistenceFilter extends GenericFilterBean {
 

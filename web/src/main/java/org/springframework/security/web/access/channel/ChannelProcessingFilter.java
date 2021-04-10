@@ -83,11 +83,27 @@ import org.springframework.web.filter.GenericFilterBean;
  * over HTTPS.
  *
  * @author Ben Alex
+ *
+ * ChannelProcessingFilter 通常是用来过滤哪些请求必须用 https 协议， 哪些请求必须用 http
+ * 协议， 哪些请求随便用哪个协议都行
+ *
+ *
+ *
  */
 public class ChannelProcessingFilter extends GenericFilterBean {
 
+	/**
+	 * 用来判断请求是否符合既定的协议规则。它维护了一个
+	 * ChannelProcessor 列表 这些 ChannelProcessor 是具体用来执行 ANY_CHANNEL 策略 （任何
+	 * 通道都可以）, REQUIRES_SECURE_CHANNEL 策略 （只能通过 https 通道）,
+	 * REQUIRES_INSECURE_CHANNEL 策略 （只能通过 http 通道）。
+	 */
 	private ChannelDecisionManager channelDecisionManager;
 
+	/**
+	 * FilterInvocationSecurityMetadataSource 用来存储 url 与 对应的 ANY_CHANNEL 、
+	 * REQUIRES_SECURE_CHANNEL 、 REQUIRES_INSECURE_CHANNEL 的映射关系。
+	 */
 	private FilterInvocationSecurityMetadataSource securityMetadataSource;
 
 	@Override

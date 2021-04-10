@@ -85,6 +85,12 @@ public class AuthenticationConfiguration {
 
 	private ObjectPostProcessor<Object> objectPostProcessor;
 
+	/**
+	 * 注入默认的 AuthenticationManagerBuilder
+	 * @param objectPostProcessor
+	 * @param context
+	 * @return
+	 */
 	@Bean
 	public AuthenticationManagerBuilder authenticationManagerBuilder(ObjectPostProcessor<Object> objectPostProcessor,
 			ApplicationContext context) {

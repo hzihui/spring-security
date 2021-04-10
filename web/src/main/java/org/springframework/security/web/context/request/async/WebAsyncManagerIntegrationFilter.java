@@ -37,6 +37,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *
  * @author Rob Winch
  * @see SecurityContextCallableProcessingInterceptor
+ *
+ * WebAsyncManagerIntegrationFilter 用于集成SecurityContext到Spring异步执行机制中的
+ * WebAsyncManager。用来处理异步请求的安全上下文。具体逻辑为：
+ * 1. 从请求属性上获取所绑定的 WebAsyncManager ，如果尚未绑定，先做绑定。
+ * 2. 从 asyncManager 中获取 key 为 CALLABLE_INTERCEPTOR_KEY 的安全上下文多线程处理器
+ * SecurityContextCallableProcessingInterceptor , 如果获取到的为 null ，
+ * 新建一个 SecurityContextCallableProcessingInterceptor 并绑定
+ * CALLABLE_INTERCEPTOR_KEY 注册到 asyncManager 中
+ *
+ *
+ *
  */
 public final class WebAsyncManagerIntegrationFilter extends OncePerRequestFilter {
 

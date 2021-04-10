@@ -1460,6 +1460,11 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 	 * automatically applied when using {@link WebSecurityConfigurerAdapter}.
 	 * @return the {@link SecurityContextConfigurer} for further customizations
 	 * @throws Exception
+	 *
+	 * SecurityContext 的在一次请求中的生命周期 。
+	 * 请求来临时，创建 SecurityContext 安全上下文信息，请求结束时清空 SecurityContextHolder
+	 *
+	 *
 	 */
 	public SecurityContextConfigurer<HttpSecurity> securityContext() throws Exception {
 		return getOrApply(new SecurityContextConfigurer<>());

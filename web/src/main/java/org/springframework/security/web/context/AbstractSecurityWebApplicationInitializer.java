@@ -70,6 +70,17 @@ import org.springframework.web.filter.DelegatingFilterProxy;
  *
  * @author Rob Winch
  * @author Keesun Baik
+ *
+ *
+ * 在任何其他注册的{@link Filter}之前注册{@link DelegatingFilterProxy}以使用springSecurityFilterChain。
+ * 当与{@link AbstractSecurityWebApplicationInitializer（Class…）}一起使用时，
+ * 它还将注册一个{@link ContextLoaderListener}。
+ * 当与{@link AbstractSecurityWebApplicationInitializer（）}一起使用时，
+ * 除了{@link AbstractContextLoaderInitializer}的子类之外，通常还使用此类。
+ *
+ *
+ *
+ *
  */
 public abstract class AbstractSecurityWebApplicationInitializer implements WebApplicationInitializer {
 

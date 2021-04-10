@@ -85,12 +85,22 @@ public final class WebSecurity extends AbstractConfiguredSecurityBuilder<Filter,
 
 	private final Log logger = LogFactory.getLog(getClass());
 
+	/**
+	 * 忽略不认证的请求url
+	 */
 	private final List<RequestMatcher> ignoredRequests = new ArrayList<>();
 
+	/**
+	 * 安全过滤链
+	 */
 	private final List<SecurityBuilder<? extends SecurityFilterChain>> securityFilterChainBuilders = new ArrayList<>();
+
 
 	private IgnoredRequestConfigurer ignoredRequestRegistry;
 
+	/**
+	 * 安全过滤拦截器
+	 */
 	private FilterSecurityInterceptor filterSecurityInterceptor;
 
 	private HttpFirewall httpFirewall;
